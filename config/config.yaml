@@ -1,0 +1,7 @@
+ssh:
+  hostname: "localhost"
+  port: 2222
+
+http:
+  hostname: "localhost"
+  port: 8000
