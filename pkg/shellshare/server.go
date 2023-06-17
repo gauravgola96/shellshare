@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gliderlabs/ssh"
 	"github.com/go-chi/chi"
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
 	"githug.com/gauravgola96/shellshare/pkg/middleware"
@@ -16,16 +17,16 @@ import (
 	"time"
 )
 
-var (
-	DeadlineTimeout = 30 * time.Second
-	IdleTimeout     = 10 * time.Second
-)
+//var (
+//	DeadlineTimeout = 30 * time.Second
+//	IdleTimeout     = 10 * time.Second
+//)
 
-func SSHServer() error {
-	subLogger := log.With().Str("module", "shellshare.sshserver").Logger()
+func ServerAll() error {
+	subLogger := log.With().Str("module", "shellshare.ServerAll").Logger()
 
 	//SSH Server
-	ssh.Handle(HandleSShRequest)
+	ssh.Handle(HandleSSHSession)
 	sshAddr := fmt.Sprintf("%s:%d", viper.GetString("ssh.hostname"), viper.GetInt("ssh.port"))
 
 	//Adding private keys so SSH don't recreate new private keys on every restart
@@ -38,9 +39,9 @@ func SSHServer() error {
 		return err
 	}
 	sshServer := &ssh.Server{
-		Addr:        sshAddr,
-		MaxTimeout:  DeadlineTimeout,
-		IdleTimeout: IdleTimeout,
+		Addr: sshAddr,
+		//MaxTimeout:  DeadlineTimeout,
+		//IdleTimeout: IdleTimeout,
 		HostSigners: []ssh.Signer{key},
 	}
 
@@ -53,11 +54,66 @@ func SSHServer() error {
 		}
 	}()
 
-	quit := make(chan os.Signal)
-	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
-	sig := <-quit
-	subLogger.Info().Msgf("SSH Server shutdown due to %s", sig)
+	//HTTP
+	addr := fmt.Sprintf("%s:%d", viper.GetString("http.hostname"), viper.GetInt("http.port"))
+	router := chi.NewRouter()
+	middleware.DefaultMiddleware(router)
 
+	httpServer := http.Server{
+		Addr:              addr,
+		Handler:           router,
+		ReadHeaderTimeout: 20 * time.Second,
+		ReadTimeout:       1 * time.Minute,
+		WriteTimeout:      2 * time.Minute,
+	}
+	router.Mount("/", HttpRoutes())
+
+	go func() {
+		subLogger.Info().Msgf("Listening http Server on %s", addr)
+		err := httpServer.ListenAndServe()
+		if err != nil {
+			subLogger.Error().Err(err).Msgf("Error in sshServer start")
+			return
+		}
+	}()
+
+	ShutDown(subLogger, "SSH & HTTP")
+	return nil
+}
+
+func SSHServer() error {
+	subLogger := log.With().Str("module", "shellshare.sshserver").Logger()
+
+	//SSH Server
+	ssh.Handle(HandleSSHSession)
+	sshAddr := fmt.Sprintf("%s:%d", viper.GetString("ssh.hostname"), viper.GetInt("ssh.port"))
+
+	//Adding private keys so SSH don't recreate new private keys on every restart
+	b, err := ioutil.ReadFile("private.pem")
+	if err != nil {
+		return err
+	}
+	key, err := gossh.ParsePrivateKey(b)
+	if err != nil {
+		return err
+	}
+	sshServer := &ssh.Server{
+		Addr: sshAddr,
+		//MaxTimeout:  DeadlineTimeout,
+		//IdleTimeout: IdleTimeout,
+		HostSigners: []ssh.Signer{key},
+	}
+
+	go func() {
+		subLogger.Info().Msgf("Listening SSH Server on %s", sshAddr)
+		err := sshServer.ListenAndServe()
+		if err != nil {
+			subLogger.Error().Err(err).Msgf("Error in sshServer start")
+			return
+		}
+	}()
+
+	ShutDown(subLogger, "HTTP")
 	return nil
 }
 
@@ -85,12 +141,14 @@ func HttpServer() error {
 			return
 		}
 	}()
+	ShutDown(subLogger, "SSH")
+	return nil
 
+}
+
+func ShutDown(l zerolog.Logger, service string) {
 	quit := make(chan os.Signal)
 	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
 	sig := <-quit
-	subLogger.Info().Msgf("HTTP Server shutdown due to %s", sig)
-
-	return nil
-
+	l.Info().Msgf("%s Server shutdown due to %s", service, sig)
 }
