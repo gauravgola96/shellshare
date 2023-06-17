@@ -38,7 +38,7 @@ func HandleSSHSession(s ssh.Session) {
 		return
 	}
 	close(tunnel.Done)
-	s.Write([]byte(BuildDownloadFinisedStr()))
+	s.Write([]byte(BuildDownloadFinishedStr()))
 }
 
 func BuildDownloadLinkStr(address string, id string) string {
@@ -49,7 +49,7 @@ func BuildDownloadLinkStr(address string, id string) string {
 	return msg.String()
 }
 
-func BuildDownloadFinisedStr() string {
+func BuildDownloadFinishedStr() string {
 	var msg strings.Builder
 	msg.WriteString("\n \n")
 	msg.WriteString(fmt.Sprintf("%s ", emoji.Parse(":sunglasses:")))
