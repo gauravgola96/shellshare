@@ -2,7 +2,10 @@ package utils
 
 import (
 	"encoding/json"
+	"fmt"
+	"math/rand"
 	"net/http"
+	"time"
 )
 
 func WriteJson(w http.ResponseWriter, status int, message any, err error, rvars ...ResponseVar) {
@@ -26,4 +29,11 @@ func WriteJson(w http.ResponseWriter, status int, message any, err error, rvars 
 type ResponseVar struct {
 	Key string
 	Val any
+}
+
+func RandomString(length int) string {
+	rand.Seed(time.Now().UnixNano())
+	b := make([]byte, length+2)
+	rand.Read(b)
+	return fmt.Sprintf("%x", b)[2 : length+2]
 }

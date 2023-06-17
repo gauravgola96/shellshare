@@ -23,5 +23,10 @@
 
 click on the link to download
 
-Example
 > Your download link: http://localhost:8000/download/0188c94d-91d4-73ad-b901-b936c2678458
+
+### Example Commands
+>
+> ssh localhost -p 2222 < file.yaml
+> 
+> ssh localhost -p 2222 filename="file.yaml" < file.yaml

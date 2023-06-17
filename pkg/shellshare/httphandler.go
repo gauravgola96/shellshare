@@ -1,6 +1,7 @@
 package shellshare
 
 import (
+	"fmt"
 	"github.com/go-chi/chi"
 	t "githug.com/gauravgola96/shellshare/pkg/tunnel"
 	"githug.com/gauravgola96/shellshare/pkg/utils"
@@ -29,11 +30,11 @@ func HandleDownloadFileFromLink(w http.ResponseWriter, r *http.Request) {
 		})
 	}
 	defer t.Tunnel.Delete(id)
+	w.Header().Set("Content-Type", "application/zip")
+	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=\"%s.zip\"", "shellshare"))
+
 	doneChan := make(chan struct{}, 1)
+
 	tunnel <- t.SSHTunnel{W: w, Done: doneChan}
 	<-doneChan
-	utils.WriteJson(w, http.StatusOK, "Download completed !!!", nil, utils.ResponseVar{
-		Key: "Id",
-		Val: id,
-	})
 }
