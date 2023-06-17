@@ -25,19 +25,21 @@ func HandleSSHSession(s ssh.Session) {
 	t.Tunnel.Store(uid.String(), make(chan t.SSHTunnel))
 
 	address := fmt.Sprintf("%s:%d", viper.GetString("http.hostname"), viper.GetInt("http.port"))
-
 	s.Write([]byte(BuildDownloadLinkStr(address, uid.String())))
 
 	tunnel := <-t.Tunnel.GetWaitTunnel(uid.String())
-	subLogger.Debug().Msgf("Tunnel ready : %s", uid.String())
+	defer func() {
+		close(tunnel.Done)
+		s.Close()
+	}()
 
+	subLogger.Debug().Msgf("Tunnel ready : %s", uid.String())
 	_, err = io.Copy(tunnel.W, s)
 	if err != nil {
 		s.Write([]byte(BuildDownloadErrorStr()))
 		subLogger.Error().Err(err).Msg("Error in session writer")
 		return
 	}
-	close(tunnel.Done)
 	s.Write([]byte(BuildDownloadFinishedStr()))
 }
 

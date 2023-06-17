@@ -18,6 +18,7 @@ func WriteJson(w http.ResponseWriter, status int, message any, err error, rvars 
 	}
 
 	w.Header().Add("Content-Type", "application/json")
+	w.Header().Add("Connection", "keep-alive")
 	w.WriteHeader(status)
 	_ = json.NewEncoder(w).Encode(resp)
 }
