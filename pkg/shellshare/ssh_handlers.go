@@ -40,30 +40,37 @@ func HandleSSHSession(s ssh.Session) {
 
 	s.Write([]byte(utils.BuildDownloadLinkStr(address, uid.String(), MaxTimoutMinutes)))
 
-	//Session close - timeout
-	go func() {
-		ticker := time.NewTicker(MaxTimoutMinutes * time.Minute)
-		<-ticker.C
-		s.Write([]byte(utils.BuildCloseSessionTimeoutStr()))
-		s.Close()
-	}()
+	ticker := time.NewTicker(MaxTimoutMinutes * time.Minute)
+	for {
+		select {
+		case <-ticker.C:
+			subLogger.Info().Msg("Session timeout")
+			s.Write([]byte(utils.BuildCloseSessionTimeoutStr()))
+			t.Tunnel.Delete(uid.String())
+			s.Close()
+			return
 
-	tunnel := <-t.Tunnel.GetWaitTunnel(uid.String())
-	defer func() {
-		close(tunnel.Done)
-		s.Close()
-	}()
+		case tunnel := <-t.Tunnel.GetWaitTunnel(uid.String()):
+			defer func() {
+				close(tunnel.Done)
+				s.Close()
+			}()
 
-	subLogger.Debug().Msgf("Tunnel ready : %s", uid.String())
+			subLogger.Debug().Msgf("Tunnel ready : %s", uid.String())
 
-	err = ZipAndWriteFile(option.FileName, tunnel.W, s)
-	if err != nil {
-		s.Write([]byte(utils.BuildDownloadErrorStr(nil)))
-		subLogger.Error().Err(err).Msg("Error in session writer")
-		return
+			err = ZipAndWriteFile(option.FileName, tunnel.W, s)
+			if err != nil {
+				s.Write([]byte(utils.BuildDownloadErrorStr(nil)))
+				subLogger.Error().Err(err).Msg("Error in session writer")
+				return
+			}
+
+			s.Write([]byte(utils.BuildDownloadFinishedStr()))
+			return
+		default:
+			//pass
+		}
 	}
-
-	s.Write([]byte(utils.BuildDownloadFinishedStr()))
 }
 
 // ZipAndWriteFile Zip file and update it to io.writer
