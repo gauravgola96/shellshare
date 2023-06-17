@@ -43,6 +43,7 @@ func HandleSSHSession(s ssh.Session) {
 
 func BuildDownloadLinkStr(address string, id string) string {
 	var msg strings.Builder
+	msg.WriteString("\n \n")
 	msg.WriteString("Your download link ")
 	msg.WriteString(fmt.Sprintf("%s ", emoji.Parse(":eyes:")))
 	msg.WriteString(fmt.Sprintf(color.Ize(color.Green, fmt.Sprintf("http://%s/download/%s", address, id))))
