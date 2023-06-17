@@ -3,8 +3,6 @@ package shellshare
 import (
 	"archive/zip"
 	"fmt"
-	"github.com/TwiN/go-color"
-	"github.com/enescakir/emoji"
 	"github.com/gliderlabs/ssh"
 	"github.com/gofrs/uuid"
 	"github.com/rs/zerolog/log"
@@ -13,14 +11,18 @@ import (
 	"githug.com/gauravgola96/shellshare/pkg/utils"
 	"io"
 	"os"
-	"strings"
+	"time"
+)
+
+const (
+	MaxTimoutMinutes = 15
 )
 
 func HandleSSHSession(s ssh.Session) {
 	subLogger := log.With().Str("module", "ssh_handler.HandleSShRequest").Logger()
 	uid, err := uuid.NewV7()
 	if err != nil || len(uid.Bytes()) == 0 {
-		s.Write([]byte(BuildDownloadErrorStr(nil)))
+		s.Write([]byte(utils.BuildDownloadErrorStr(nil)))
 		subLogger.Error().Err(err).Msg("Error in new uuid")
 		return
 	}
@@ -31,12 +33,20 @@ func HandleSSHSession(s ssh.Session) {
 
 	option, err := utils.ParseUserOption(s.Command())
 	if err != nil {
-		s.Write([]byte(BuildDownloadErrorStr(err)))
+		s.Write([]byte(utils.BuildDownloadErrorStr(err)))
 		subLogger.Error().Err(err).Msg("Error in user options")
 		return
 	}
 
-	s.Write([]byte(BuildDownloadLinkStr(address, uid.String())))
+	s.Write([]byte(utils.BuildDownloadLinkStr(address, uid.String(), MaxTimoutMinutes)))
+
+	//Session close - timeout
+	go func() {
+		ticker := time.NewTicker(MaxTimoutMinutes * time.Minute)
+		<-ticker.C
+		s.Write([]byte(utils.BuildCloseSessionTimeoutStr()))
+		s.Close()
+	}()
 
 	tunnel := <-t.Tunnel.GetWaitTunnel(uid.String())
 	defer func() {
@@ -48,43 +58,12 @@ func HandleSSHSession(s ssh.Session) {
 
 	err = ZipAndWriteFile(option.FileName, tunnel.W, s)
 	if err != nil {
-		s.Write([]byte(BuildDownloadErrorStr(nil)))
+		s.Write([]byte(utils.BuildDownloadErrorStr(nil)))
 		subLogger.Error().Err(err).Msg("Error in session writer")
 		return
 	}
 
-	s.Write([]byte(BuildDownloadFinishedStr()))
-}
-
-func BuildDownloadLinkStr(address string, id string) string {
-	var msg strings.Builder
-	msg.WriteString("\n \n")
-	msg.WriteString("Your download link ")
-	msg.WriteString(fmt.Sprintf("%s ", emoji.Parse(":eyes:")))
-	msg.WriteString(fmt.Sprintf(color.Ize(color.Green, fmt.Sprintf("http://%s/download/%s", address, id))))
-	return msg.String()
-}
-
-func BuildDownloadFinishedStr() string {
-	var msg strings.Builder
-	msg.WriteString("\n \n")
-	msg.WriteString(fmt.Sprintf("%s ", emoji.Parse(":sunglasses:")))
-	msg.WriteString("We are done !!! ")
-	msg.WriteString(fmt.Sprintf("%s ", emoji.Parse(":tada:")))
-	return msg.String()
-}
-
-func BuildDownloadErrorStr(err error) string {
-	var msg strings.Builder
-	msg.WriteString("\n \n")
-	msg.WriteString(fmt.Sprintf(color.Ize(color.Red, "Sorry something wend wrong!")))
-	if err != nil {
-		msg.WriteString("\n")
-		msg.WriteString(fmt.Sprintf("%s %s ", err.Error(), emoji.Parse(":cold_sweat:")))
-		return msg.String()
-	}
-	msg.WriteString(fmt.Sprintf("%s ", emoji.Parse(":face_with_head_bandage:")))
-	return msg.String()
+	s.Write([]byte(utils.BuildDownloadFinishedStr()))
 }
 
 // ZipAndWriteFile Zip file and update it to io.writer

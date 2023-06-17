@@ -53,7 +53,7 @@ func ParseUserOption(cmd []string) (*UserOptions, error) {
 			userOpts.FileName = value
 		case Message:
 			if len(value) > maxMsgLength {
-				return nil, errors.New(fmt.Sprintf("message size is more than %d characters", maxMsgLength))
+				return nil, errors.New(fmt.Sprintf("message size cannot be more than %d characters", maxMsgLength))
 			}
 			userOpts.Message = value
 		}
