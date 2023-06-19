@@ -2,6 +2,8 @@ package shellshare
 
 import (
 	"archive/zip"
+	"bytes"
+	"errors"
 	"fmt"
 	"github.com/gliderlabs/ssh"
 	"github.com/gofrs/uuid"
@@ -31,11 +33,25 @@ func HandleSSHSession(s ssh.Session) {
 	t.Tunnel.Store(uid.String(), make(chan t.SSHTunnel))
 
 	address := fmt.Sprintf("%s:%d", viper.GetString("http.hostname"), viper.GetInt("http.port"))
-
 	option, err := utils.ParseUserOption(s.Command())
 	if err != nil {
 		s.Write([]byte(utils.BuildDownloadErrorStr(err)))
 		subLogger.Error().Err(err).Msg("Error in user options")
+		return
+	}
+
+	// check file size
+	buf := &bytes.Buffer{}
+	r := s
+	nRead, err := io.Copy(buf, r)
+	if err != nil {
+		s.Write([]byte(utils.BuildDownloadErrorStr(err)))
+		subLogger.Error().Err(err).Msg("Error in copy reader for size")
+		return
+	}
+
+	if nRead > MaxBytesSize {
+		s.Write([]byte(utils.BuildDownloadErrorStr(errors.New(fmt.Sprintf("file size cannot be %d GBs", MaxBytesSize/1024/1024/1024)))))
 		return
 	}
 
@@ -61,7 +77,7 @@ func HandleSSHSession(s ssh.Session) {
 
 			err = ZipAndWriteFile(option.FileName, tunnel.W, s)
 			if err != nil {
-				s.Write([]byte(utils.BuildDownloadErrorStr(nil)))
+				s.Write([]byte(utils.BuildDownloadErrorStr(err)))
 				subLogger.Error().Err(err).Msg("Error in session writer")
 				return
 			}
