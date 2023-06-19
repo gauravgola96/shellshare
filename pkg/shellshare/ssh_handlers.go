@@ -42,8 +42,7 @@ func HandleSSHSession(s ssh.Session) {
 
 	// check file size
 	buf := &bytes.Buffer{}
-	r := s
-	nRead, err := io.Copy(buf, r)
+	nRead, err := io.Copy(buf, s)
 	if err != nil {
 		s.Write([]byte(utils.BuildDownloadErrorStr(err)))
 		subLogger.Error().Err(err).Msg("Error in copy reader for size")
@@ -75,7 +74,7 @@ func HandleSSHSession(s ssh.Session) {
 
 			subLogger.Debug().Msgf("Tunnel ready : %s", uid.String())
 
-			err = ZipAndWriteFile(option.FileName, tunnel.W, s)
+			err = ZipAndWriteFile(option.FileName, tunnel.W, buf)
 			if err != nil {
 				s.Write([]byte(utils.BuildDownloadErrorStr(err)))
 				subLogger.Error().Err(err).Msg("Error in session writer")
