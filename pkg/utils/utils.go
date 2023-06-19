@@ -45,10 +45,11 @@ func BuildDownloadLinkStr(address string, id string, timeout int) string {
 	var msg strings.Builder
 	msg.WriteString("\n \n")
 	msg.WriteString("Your download link ")
-	msg.WriteString(fmt.Sprintf("%s ", emoji.Parse(":eyes:")))
-	msg.WriteString(fmt.Sprintf(color.Ize(color.Green, fmt.Sprintf("http://%s/download/%s", address, id))))
+	msg.WriteString(fmt.Sprintf("%s ", emoji.Parse(":eyes: :")))
+	msg.WriteString(fmt.Sprintf(color.Ize(color.Green, fmt.Sprintf("http://%s/v1/download/%s", address, id))))
 	msg.WriteString("\n \n \n")
-	msg.WriteString(fmt.Sprintf("Your link will expire in %d %s minutes", timeout, emoji.Parse(":hugging_face:")))
+	msg.WriteString(fmt.Sprintf(color.Ize(color.Yellow, "Please don't kill this session \n")))
+	msg.WriteString(fmt.Sprintf("Your link will expire in %d minutes %s \n", timeout, emoji.Parse(":hugging_face:")))
 	return msg.String()
 }
 
@@ -64,7 +65,7 @@ func BuildDownloadFinishedStr() string {
 func BuildDownloadErrorStr(err error) string {
 	var msg strings.Builder
 	msg.WriteString("\n \n")
-	msg.WriteString(fmt.Sprintf(color.Ize(color.Red, "Sorry something wend wrong!")))
+	msg.WriteString(fmt.Sprintf(color.Ize(color.Red, "Sorry something went wrong!")))
 	if err != nil {
 		msg.WriteString("\n")
 		msg.WriteString(fmt.Sprintf("%s %s ", err.Error(), emoji.Parse(":cold_sweat:")))

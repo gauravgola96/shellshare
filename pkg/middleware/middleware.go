@@ -16,7 +16,7 @@ func DefaultMiddleware(r *chi.Mux) http.Handler {
 		middleware.Recoverer,
 		middleware.RequestID,
 		middleware.RealIP,
-		middleware.StripSlashes,
+		//middleware.StripSlashes,
 		compressor.Handler,
 		cors.Handler(cors.Options{
 			// AllowedOrigins:   []string{"https://foo.com"}, // Use this to allow specific origin hosts

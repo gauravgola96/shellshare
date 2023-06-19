@@ -16,6 +16,7 @@ import (
 
 const (
 	MaxTimoutMinutes = 15
+	MaxBytesSize     = 2147483648 //2 GB
 )
 
 func HandleSSHSession(s ssh.Session) {

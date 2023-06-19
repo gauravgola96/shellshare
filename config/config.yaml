@@ -1,3 +1,5 @@
+Production: false
+
 ssh:
   hostname: "localhost"
   port: 2222
@@ -5,3 +7,11 @@ ssh:
 http:
   hostname: "localhost"
   port: 8000
+
+auth:
+  github:
+    client_id: "8735d1e7ca9e550a7353"
+    client_secret: "4dfca1564e7325536bd5eb81d12b01bbe603757c"
+  google:
+    client_id: "470536735112-a3kbkq28qtoqtq2fbj2u1cioth7cr8uk.apps.googleusercontent.com"
+    client_secret: "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"

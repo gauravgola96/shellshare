@@ -11,7 +11,7 @@
 
 ```go run cmd/shellshare/main.go http ```
 
-### Run SSH & HTTP Server combined as single service - Preffered
+### Run SSH & HTTP Server combined as single Service - Preffered
 
 ```go run cmd/shellshare/main.go combined ```
 
