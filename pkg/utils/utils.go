@@ -48,7 +48,7 @@ func RandomString(length int) string {
 
 func BuildDownloadLinkStr(address string, id string, timeout int) string {
 	var msg strings.Builder
-	msg.WriteString("\n \n")
+	msg.WriteString("\n")
 	msg.WriteString(fmt.Sprintf(color.Ize(color.Red, fmt.Sprintf("WARNING : Only file size upto %dGB is allowed !!! ", MaxBytesSize/1024/1024/1024))))
 	msg.WriteString(fmt.Sprintf("%s ", emoji.Parse(":warning: ")))
 	msg.WriteString("\n")
@@ -57,7 +57,7 @@ func BuildDownloadLinkStr(address string, id string, timeout int) string {
 	msg.WriteString(fmt.Sprintf(color.Ize(color.Green, fmt.Sprintf("http://%s/v1/download/%s", address, id))))
 	msg.WriteString("\n \n \n")
 	msg.WriteString(fmt.Sprintf(color.Ize(color.Yellow, "Please don't kill this session \n")))
-	msg.WriteString(fmt.Sprintf("Your link will expire in %d minutes %s \n", timeout, emoji.Parse(":hugging_face:")))
+	msg.WriteString(fmt.Sprintf("Your link will expire in %d minutes, If not used %s \n", timeout, emoji.Parse(":hugging_face:")))
 	return msg.String()
 }
 
