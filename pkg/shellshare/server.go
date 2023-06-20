@@ -84,8 +84,8 @@ func ServerAll() error {
 		Addr:              addr,
 		Handler:           router,
 		ReadHeaderTimeout: 20 * time.Second,
-		ReadTimeout:       1 * time.Minute,
-		WriteTimeout:      2 * time.Minute,
+		ReadTimeout:       20 * time.Minute,
+		WriteTimeout:      20 * time.Minute,
 	}
 
 	go func() {
