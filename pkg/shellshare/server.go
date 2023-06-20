@@ -48,6 +48,9 @@ func ServerAll() error {
 		//MaxTimeout:  DeadlineTimeout,
 		//IdleTimeout: IdleTimeout,
 		HostSigners: []ssh.Signer{key},
+		PublicKeyHandler: func(ctx ssh.Context, key ssh.PublicKey) bool {
+			return true
+		},
 	}
 
 	go func() {

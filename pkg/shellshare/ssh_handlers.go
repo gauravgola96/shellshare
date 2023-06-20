@@ -10,6 +10,7 @@ import (
 	"github.com/spf13/viper"
 	t "githug.com/gauravgola96/shellshare/pkg/tunnel"
 	"githug.com/gauravgola96/shellshare/pkg/utils"
+	gossh "golang.org/x/crypto/ssh"
 	"io"
 	"os"
 	"time"
@@ -22,6 +23,9 @@ const (
 
 func HandleSSHSession(s ssh.Session) {
 	subLogger := log.With().Str("module", "ssh_handler.HandleSShRequest").Logger()
+
+	authorizedKey := gossh.MarshalAuthorizedKey(s.PublicKey())
+	subLogger.Info().Msgf("SSH request from %s : %s", s.User(), authorizedKey)
 	uid, err := uuid.NewV7()
 	if err != nil || len(uid.Bytes()) == 0 {
 		s.Write([]byte(utils.BuildDownloadErrorStr(nil)))
