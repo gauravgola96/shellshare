@@ -16,11 +16,6 @@ import (
 	"time"
 )
 
-const (
-	MaxTimoutMinutes = 15
-	MaxBytesSize     = 2147483648 //2 GB
-)
-
 func HandleSSHSession(s ssh.Session) {
 	subLogger := log.With().Str("module", "ssh_handler.HandleSShRequest").Logger()
 
@@ -43,11 +38,15 @@ func HandleSSHSession(s ssh.Session) {
 		return
 	}
 
-	s.Write([]byte(utils.BuildDownloadLinkStr(address, uid.String(), MaxTimoutMinutes)))
+	s.Write([]byte(utils.BuildDownloadLinkStr(address, uid.String(), utils.MaxTimoutMinutes)))
 
-	ticker := time.NewTicker(MaxTimoutMinutes * time.Minute)
+	ticker := time.NewTicker(utils.MaxTimoutMinutes * time.Minute)
 	for {
 		select {
+		case <-s.Context().Done():
+			subLogger.Info().Msg("Session closed from client")
+			return
+
 		case <-ticker.C:
 			subLogger.Info().Msg("Session timeout")
 			s.Write([]byte(utils.BuildCloseSessionTimeoutStr()))
@@ -163,8 +162,8 @@ func CopyBuffer(dst io.Writer, src io.Reader, buf []byte) (written int64, err er
 				break
 			}
 
-			if written > MaxBytesSize {
-				return written, errors.New(fmt.Sprintf("file size cannot be more than %d GB", MaxBytesSize/1024/1024/1024))
+			if written > utils.MaxBytesSize {
+				return written, errors.New(fmt.Sprintf("File size cannot be more than %d GB", utils.MaxBytesSize/1024/1024/1024))
 			}
 
 		}
