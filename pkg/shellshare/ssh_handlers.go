@@ -163,7 +163,7 @@ func CopyBuffer(dst io.Writer, src io.Reader, buf []byte) (written int64, err er
 			}
 
 			if written > utils.MaxBytesSize {
-				return written, errors.New(fmt.Sprintf("File size cannot be more than %d GB", utils.MaxBytesSize/1024/1024/1024))
+				return written, errors.New(fmt.Sprintf("File size cannot be more than %dGB", utils.MaxBytesSize/1024/1024/1024))
 			}
 
 		}

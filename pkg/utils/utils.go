@@ -49,7 +49,7 @@ func RandomString(length int) string {
 func BuildDownloadLinkStr(address string, id string, timeout int) string {
 	var msg strings.Builder
 	msg.WriteString("\n \n")
-	msg.WriteString(fmt.Sprintf(color.Ize(color.Red, fmt.Sprintf("WARNING : Only file size upto %dGB are allowed !!! ", MaxBytesSize/1024/1024/1024))))
+	msg.WriteString(fmt.Sprintf(color.Ize(color.Red, fmt.Sprintf("WARNING : Only file size upto %dGB is allowed !!! ", MaxBytesSize/1024/1024/1024))))
 	msg.WriteString(fmt.Sprintf("%s ", emoji.Parse(":warning: ")))
 	msg.WriteString("\n")
 	msg.WriteString("Your download link ")
