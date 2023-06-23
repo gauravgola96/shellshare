@@ -75,7 +75,7 @@ func ServerAll() error {
 
 	// setup ui
 	workDir, _ := os.Getwd()
-	filesDir := filepath.Join(workDir, "frontend")
+	filesDir := filepath.Join(workDir, "frontend-working")
 	fileServer(router, "/", http.Dir(filesDir))
 
 	// setup routes

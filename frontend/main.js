@@ -64,6 +64,7 @@ function login(prov) {
           resolve();
           win.close();
           clearInterval(interval);
+          console.log("logged in from here")
         }
       } catch (e) {
       }

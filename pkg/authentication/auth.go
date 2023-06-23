@@ -33,7 +33,7 @@ func Initialize(ctx context.Context) error {
 		}),
 		TokenDuration:     time.Minute,                                 // short token, refreshed automatically
 		CookieDuration:    time.Hour * 24,                              // cookie fine to keep for long time
-		DisableXSRF:       true,                                        // don't disable XSRF in real-life applications!
+		DisableXSRF:       false,                                       // don't disable XSRF in real-life applications!
 		Issuer:            "shellshare-service",                        // part of token, just informational
 		URL:               addr,                                        // base url of the protected Service
 		AvatarStore:       avatar.NewLocalFS("/tmp/demo-auth-service"), // stores avatars locally
