@@ -5,6 +5,7 @@ ssh:
   port: 2222
 
 http:
+  remote_host: "shellshare.io"
   hostname: "localhost"
   port: 8000
 

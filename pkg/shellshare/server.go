@@ -11,6 +11,7 @@ import (
 	"github.com/spf13/viper"
 	auth2 "githug.com/gauravgola96/shellshare/pkg/authentication"
 	"githug.com/gauravgola96/shellshare/pkg/middleware"
+	"githug.com/gauravgola96/shellshare/pkg/storage"
 	gossh "golang.org/x/crypto/ssh"
 	"io/ioutil"
 	"net/http"
@@ -29,6 +30,9 @@ import (
 
 func ServerAll() error {
 	subLogger := log.With().Str("module", "shellshare.ServerAll").Logger()
+
+	//cache initialize
+	_ = storage.InitializeCache()
 
 	//SSH Server
 	ssh.Handle(HandleSSHSession)

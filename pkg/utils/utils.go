@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/TwiN/go-color"
 	"github.com/enescakir/emoji"
+	"github.com/spf13/viper"
 	"math/rand"
 	"net/http"
 	"strings"
@@ -13,6 +14,7 @@ import (
 
 const (
 	MaxTimoutMinutes = 15
+	MaxCacheTTL      = 20
 	MaxBytesSize     = 2147483648 //2 GB
 )
 
@@ -46,6 +48,14 @@ func RandomString(length int) string {
 	return fmt.Sprintf("%x", b)[2 : length+2]
 }
 
+func GetHostAddress() string {
+	address := fmt.Sprintf("https://%s", viper.GetString("http.remote_host"))
+	if !viper.GetBool("production") {
+		address = fmt.Sprintf("http://%s:%d", viper.GetString("http.hostname"), viper.GetInt("http.port"))
+	}
+	return address
+}
+
 func BuildDownloadLinkStr(address string, id string, timeout int) string {
 	var msg strings.Builder
 	msg.WriteString("\n")
@@ -54,7 +64,7 @@ func BuildDownloadLinkStr(address string, id string, timeout int) string {
 	msg.WriteString("\n")
 	msg.WriteString("Your download link ")
 	msg.WriteString(fmt.Sprintf("%s ", emoji.Parse(":eyes: :")))
-	msg.WriteString(fmt.Sprintf(color.Ize(color.Green, fmt.Sprintf("http://%s/v1/download/%s", address, id))))
+	msg.WriteString(fmt.Sprintf(color.Ize(color.Green, fmt.Sprintf("%s/v1/redirect/download/%s", address, id))))
 	msg.WriteString("\n \n \n")
 	msg.WriteString(fmt.Sprintf(color.Ize(color.Yellow, "Please don't kill this session \n")))
 	msg.WriteString(fmt.Sprintf("Your link will expire in %d minutes, If not used %s \n", timeout, emoji.Parse(":hugging_face:")))

@@ -6,6 +6,7 @@ import (
 	"github.com/go-pkgz/auth/token"
 	"github.com/rs/zerolog/log"
 	auth2 "githug.com/gauravgola96/shellshare/pkg/authentication"
+	st "githug.com/gauravgola96/shellshare/pkg/storage"
 	t "githug.com/gauravgola96/shellshare/pkg/tunnel"
 	"githug.com/gauravgola96/shellshare/pkg/utils"
 	"net/http"
@@ -15,7 +16,8 @@ import (
 func HttpRoutes() *chi.Mux {
 	r := chi.NewRouter()
 	r.Get("/health", HandleHealthCheck)
-	r.Get("/download/{id}", HandleDownloadFileFromLink)
+	r.Get("/download/{id}", HandleDirectDownload)
+	r.Get("/redirect/download/{id}", HandleIndirectDownload)
 	r.Route("/user/", func(r chi.Router) {
 		m := auth2.Auth.Service.Middleware()
 		r.Use(m.Auth)
@@ -29,7 +31,7 @@ func HandleHealthCheck(w http.ResponseWriter, r *http.Request) {
 	utils.WriteJson(w, http.StatusOK, "Healthy Upstream !!!", nil, utils.ResponseVar{Key: "Version", Val: os.Getenv("Version")})
 }
 
-func HandleDownloadFileFromLink(w http.ResponseWriter, r *http.Request) {
+func HandleDirectDownload(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	tunnel, ok := t.Tunnel.Get(id)
 	if !ok {
@@ -57,4 +59,25 @@ func HandleUserInfo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	utils.WriteJson(w, http.StatusOK, "successfully fetched user info", nil, utils.ResponseVar{"user_info", userInfo})
+}
+
+func HandleIndirectDownload(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+	_, startTime, err := st.Cache.Get(id)
+	if err != nil && err == st.ErrNilCache {
+		utils.WriteJson(w, http.StatusNotFound, fmt.Sprintf("Download for %s is either completed or timed out", id), nil)
+		return
+	} else if err != nil {
+		utils.WriteJson(w, http.StatusInternalServerError, "something went wrong", err, utils.ResponseVar{
+			Key: "Id",
+			Val: id,
+		})
+		return
+	}
+
+	address := utils.GetHostAddress()
+	downloadLink := fmt.Sprintf("%s/v1/download/%s", address, id)
+
+	utils.WriteJson(w, http.StatusOK, "succesfully fetched download details", nil, utils.ResponseVar{"download_link", downloadLink},
+		utils.ResponseVar{"start_time", startTime})
 }

@@ -7,7 +7,7 @@ import (
 	"github.com/gliderlabs/ssh"
 	"github.com/gofrs/uuid"
 	"github.com/rs/zerolog/log"
-	"github.com/spf13/viper"
+	st "githug.com/gauravgola96/shellshare/pkg/storage"
 	t "githug.com/gauravgola96/shellshare/pkg/tunnel"
 	"githug.com/gauravgola96/shellshare/pkg/utils"
 	gossh "golang.org/x/crypto/ssh"
@@ -30,13 +30,15 @@ func HandleSSHSession(s ssh.Session) {
 	subLogger.Debug().Msgf("Tunnel Id : %s", uid.String())
 	t.Tunnel.Store(uid.String(), make(chan t.SSHTunnel))
 
-	address := fmt.Sprintf("%s:%d", viper.GetString("http.hostname"), viper.GetInt("http.port"))
+	address := utils.GetHostAddress()
 	option, err := utils.ParseUserOption(s.Command())
 	if err != nil {
 		s.Write([]byte(utils.BuildDownloadErrorStr(err)))
 		subLogger.Error().Err(err).Msg("Error in user options")
 		return
 	}
+	//store in cache
+	st.Cache.Put(uid.String(), "", utils.MaxCacheTTL*time.Minute)
 
 	s.Write([]byte(utils.BuildDownloadLinkStr(address, uid.String(), utils.MaxTimoutMinutes)))
 
@@ -57,6 +59,7 @@ func HandleSSHSession(s ssh.Session) {
 		case tunnel := <-t.Tunnel.GetWaitTunnel(uid.String()):
 			defer func() {
 				close(tunnel.Done)
+				st.Cache.Delete(uid.String())
 				s.Close()
 			}()
 
