@@ -13,9 +13,9 @@ import (
 )
 
 const (
-	MaxTimoutMinutes = 15
-	MaxCacheTTL      = 20
-	MaxBytesSize     = 2147483648 //2 GB
+	MaxTimoutMinutes   = 15
+	MaxCacheTTLMinutes = 20
+	MaxBytesSize       = 2147483648 //2 GB
 )
 
 func WriteJson(w http.ResponseWriter, status int, message any, err error, rvars ...ResponseVar) {

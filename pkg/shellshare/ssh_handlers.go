@@ -38,7 +38,7 @@ func HandleSSHSession(s ssh.Session) {
 		return
 	}
 	//store in cache
-	st.Cache.Put(uid.String(), "", utils.MaxCacheTTL*time.Minute)
+	st.Cache.Put(uid.String(), "", utils.MaxCacheTTLMinutes*time.Minute)
 
 	s.Write([]byte(utils.BuildDownloadLinkStr(address, uid.String(), utils.MaxTimoutMinutes)))
 
