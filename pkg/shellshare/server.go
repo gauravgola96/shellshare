@@ -31,8 +31,12 @@ import (
 func ServerAll() error {
 	subLogger := log.With().Str("module", "shellshare.ServerAll").Logger()
 
-	//cache initialize
-	_ = storage.InitializeCache()
+	//storage initialize
+	err := storage.Initialize()
+	if err != nil {
+		subLogger.Error().Err(err).Msgf("Error in storage initialization")
+		return err
+	}
 
 	//SSH Server
 	ssh.Handle(HandleSSHSession)

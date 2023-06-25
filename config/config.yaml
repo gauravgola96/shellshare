@@ -16,3 +16,8 @@ auth:
   google:
     client_id: "470536735112-a3kbkq28qtoqtq2fbj2u1cioth7cr8uk.apps.googleusercontent.com"
     client_secret: "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"
+
+storage:
+  mongo:
+    host: "localhost"
+    port: 27017
