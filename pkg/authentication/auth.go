@@ -2,12 +2,12 @@ package authentication
 
 import (
 	"context"
-	"fmt"
 	"github.com/go-pkgz/auth"
 	"github.com/go-pkgz/auth/avatar"
 	"github.com/go-pkgz/auth/token"
 	log "github.com/go-pkgz/lgr"
 	"github.com/spf13/viper"
+	"githug.com/gauravgola96/shellshare/pkg/utils"
 	"strings"
 	"time"
 )
@@ -20,11 +20,8 @@ var Auth AuthHandler
 
 func Initialize(ctx context.Context) error {
 
-	addr := "https://shellshare.sh"
+	addr := utils.GetHostAddress()
 
-	if !viper.GetBool("production") {
-		addr = fmt.Sprintf("http://%s:%d", viper.GetString("http.hostname"), viper.GetInt("http.port"))
-	}
 	log.Setup(log.Debug, log.Msec, log.LevelBraces, log.CallerFile, log.CallerFunc) // setup default logger with go-pkgz/lgr
 
 	options := auth.Opts{

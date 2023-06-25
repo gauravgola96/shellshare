@@ -12,7 +12,7 @@ func TestNewCache(t *testing.T) {
 	Cache.Put(key, "test data", 2*time.Second)
 	time.Sleep(5 * time.Second)
 	res, time, err := Cache.Get(key)
-	if err != NilCache() && err != nil {
+	if err != ErrNilCache && err != nil {
 		return
 	}
 	t.Log(res, " ", time)
