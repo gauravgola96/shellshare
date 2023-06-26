@@ -10,8 +10,10 @@ import (
 	"githug.com/gauravgola96/shellshare/pkg/storage"
 	t "githug.com/gauravgola96/shellshare/pkg/tunnel"
 	"githug.com/gauravgola96/shellshare/pkg/utils"
+	"html/template"
 	"net/http"
 	"os"
+	"time"
 )
 
 func HttpRoutes() *chi.Mux {
@@ -103,10 +105,28 @@ func HandleRedirectDownload(w http.ResponseWriter, r *http.Request) {
 	}
 
 	address := utils.GetHostAddress()
-	downloadLink := fmt.Sprintf("%s/v1/download/%s", address, id)
+	//downloadLink := fmt.Sprintf("%s/v1/download/%s", address, id)
+	templateData := struct {
+		DownloadLink string
+		Message      string
+		StartTime    time.Time
+	}{
+		DownloadLink: fmt.Sprintf("%s/v1/download/%s", address, id),
+		Message:      v.Message,
+		StartTime:    v.StartTime,
+	}
 
-	utils.WriteJson(w, http.StatusOK, "successfully fetched download details", nil, utils.ResponseVar{"download_link", downloadLink},
-		utils.ResponseVar{"start_time", v.StartTime}, utils.ResponseVar{"message", v.Message})
+	t, _ := template.ParseFiles("frontend-working/redirect.html")
+	err = t.Execute(w, templateData)
+	if err != nil {
+		utils.WriteJson(w, http.StatusInternalServerError, "something went wrong", err, utils.ResponseVar{
+			Key: "Id",
+			Val: id,
+		})
+		return
+	}
+	//utils.WriteJson(w, http.StatusOK, "successfully fetched download details", nil, utils.ResponseVar{"download_link", downloadLink},
+	//	utils.ResponseVar{"start_time", v.StartTime}, utils.ResponseVar{"message", v.Message})
 }
 
 func HandleRegisterUser(w http.ResponseWriter, r *http.Request) {
@@ -138,4 +158,16 @@ func HandleUserList(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	utils.WriteJson(w, http.StatusOK, "successfully fetched user list", nil, utils.ResponseVar{"users", users})
+}
+
+func RenderTemplate(w http.ResponseWriter, html string) error {
+	parsedTemplate, err := template.ParseFiles("./frontend-working/" + html)
+	if err != nil {
+		return err
+	}
+	err = parsedTemplate.Execute(w, nil)
+	if err != nil {
+		return err
+	}
+	return nil
 }
