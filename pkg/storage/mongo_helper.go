@@ -80,7 +80,7 @@ func RegisterUser(ctx context.Context, data User) error {
 }
 
 func UpdateUserLastLogin(ctx context.Context, id string) error {
-	subLogger := log.With().Str("module", "mongo_helper.RegisterUser").Logger()
+	subLogger := log.With().Str("module", "mongo_helper.UpdateUserLastLogin").Logger()
 
 	ctx, cancle := context.WithTimeout(ctx, 5*time.Second)
 	defer cancle()
@@ -99,7 +99,7 @@ func UpdateUserLastLogin(ctx context.Context, id string) error {
 	return nil
 }
 
-// GetUsers : returns list of users. set limit -1 to get all users limits
+// GetUsers : returns list of users. Set limit -1 to get all users
 func GetUsers(ctx context.Context, limit int64) ([]User, error) {
 	subLogger := log.With().Str("module", "mongo_helper.GetUsers").Logger()
 

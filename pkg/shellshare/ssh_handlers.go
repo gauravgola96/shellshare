@@ -39,7 +39,7 @@ func HandleSSHSession(s ssh.Session) {
 		return
 	}
 	//store in cache
-	st.S.Cache.Put(uid.String(), "", utils.MaxCacheTTLMinutes*time.Minute)
+	st.S.Cache.Put(uid.String(), st.ValueItem{FileName: option.FileName, Message: option.Message}, utils.MaxCacheTTLMinutes*time.Minute)
 	defer st.S.Cache.Delete(uid.String())
 
 	s.Write([]byte(utils.BuildDownloadLinkStr(address, uid.String(), utils.MaxTimoutMinutes)))

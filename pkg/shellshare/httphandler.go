@@ -90,7 +90,7 @@ func HandleUserInfo(w http.ResponseWriter, r *http.Request) {
 
 func HandleRedirectDownload(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
-	_, startTime, err := storage.S.Cache.Get(id)
+	v, err := storage.S.Cache.Get(id)
 	if err == storage.ErrNilCache {
 		utils.WriteJson(w, http.StatusNotFound, fmt.Sprintf("Download is either completed or timed out"), nil)
 		return
@@ -106,7 +106,7 @@ func HandleRedirectDownload(w http.ResponseWriter, r *http.Request) {
 	downloadLink := fmt.Sprintf("%s/v1/download/%s", address, id)
 
 	utils.WriteJson(w, http.StatusOK, "successfully fetched download details", nil, utils.ResponseVar{"download_link", downloadLink},
-		utils.ResponseVar{"start_time", startTime})
+		utils.ResponseVar{"start_time", v.StartTime}, utils.ResponseVar{"message", v.Message})
 }
 
 func HandleRegisterUser(w http.ResponseWriter, r *http.Request) {

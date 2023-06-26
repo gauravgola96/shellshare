@@ -26,13 +26,14 @@ type Storage struct {
 
 // Cache_ is a struct for caching.
 type Cache_ struct {
-	items map[string]*valueItem
+	items map[string]*ValueItem
 	mu    sync.Mutex
 }
 
-type valueItem struct {
-	Value      string
-	startTime  time.Time
+type ValueItem struct {
+	Message    string
+	FileName   string
+	StartTime  time.Time
 	lastAccess int64
 	Expires    int64
 }
@@ -75,7 +76,7 @@ func InitializeMongo() (*mongo.Client, error) {
 
 func NewCache() (*Cache_, error) {
 	subLogger := log.With().Str("module", "storage.cache").Logger()
-	Cache := &Cache_{items: make(map[string]*valueItem)}
+	Cache := &Cache_{items: make(map[string]*ValueItem)}
 	go func() {
 		t := time.NewTicker(time.Second)
 		defer t.Stop()
@@ -97,26 +98,25 @@ func NewCache() (*Cache_, error) {
 }
 
 // Get gets a value from a cache.
-func (c *Cache_) Get(key string) (string, time.Time, error) {
+func (c *Cache_) Get(key string) (*ValueItem, error) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 	if v, ok := c.items[key]; ok {
 		v.lastAccess = time.Now().UnixNano()
-		return v.Value, v.startTime, nil
+		return v, nil
 	}
-	return "", time.Time{}, ErrNilCache
+	return nil, ErrNilCache
 }
 
 // Put puts a value to a cache. If a key and value exists, overwrite it.
-func (c *Cache_) Put(key string, value string, expire time.Duration) {
+func (c *Cache_) Put(key string, value ValueItem, expire time.Duration) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 	if _, ok := c.items[key]; !ok {
-		c.items[key] = &valueItem{
-			Value:     value,
-			startTime: time.Now(),
-			Expires:   expire.Nanoseconds(),
-		}
+
+		value.StartTime = time.Now()
+		value.Expires = expire.Nanoseconds()
+		c.items[key] = &value
 	}
 	c.items[key].lastAccess = time.Now().UnixNano()
 }

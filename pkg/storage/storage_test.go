@@ -25,13 +25,13 @@ func TestNewCache(t *testing.T) {
 	Cache, _ := NewCache()
 	key := "keytest_123"
 
-	Cache.Put(key, "test data", 2*time.Second)
+	Cache.Put(key, ValueItem{Message: "Good file", FileName: "xyz.mp4"}, 2*time.Second)
 	time.Sleep(5 * time.Second)
-	res, time, err := Cache.Get(key)
-	if err != ErrNilCache && err != nil {
+	res, err := Cache.Get(key)
+	if err == ErrNilCache || err != nil {
 		return
 	}
-	t.Log(res, " ", time)
+	t.Log(res.Message, " ", res.FileName)
 }
 
 func TestStorageMongo(t *testing.T) {
