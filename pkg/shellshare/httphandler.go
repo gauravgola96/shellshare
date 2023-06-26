@@ -6,7 +6,6 @@ import (
 	"github.com/go-pkgz/auth/token"
 	"github.com/rs/zerolog/log"
 	auth2 "githug.com/gauravgola96/shellshare/pkg/authentication"
-	"githug.com/gauravgola96/shellshare/pkg/middleware"
 	st "githug.com/gauravgola96/shellshare/pkg/storage"
 	t "githug.com/gauravgola96/shellshare/pkg/tunnel"
 	"githug.com/gauravgola96/shellshare/pkg/utils"
@@ -16,15 +15,26 @@ import (
 
 func HttpRoutes() *chi.Mux {
 	r := chi.NewRouter()
+	m := auth2.Auth.Service.Middleware()
+
 	r.Get("/health", HandleHealthCheck)
 	r.Get("/download/{id}", HandleDirectDownload)
 	r.Get("/redirect/download/{id}", HandleRedirectDownload)
 	r.Route("/user/", func(r chi.Router) {
-		m := auth2.Auth.Service.Middleware()
-		r.Use(middleware.AddAuthXSRFToken)
 		r.Use(m.Auth)
 
 		r.Get("/info", HandleUserInfo)
+		r.Get("/register", HandleRegisterUser)
+	})
+	return r
+}
+
+func InternalRoutes() *chi.Mux {
+	r := chi.NewRouter()
+	m := auth2.Auth.Service.Middleware()
+	r.Use(m.AdminOnly)
+	r.Route("/users", func(r chi.Router) {
+		r.Get("/", HandleUserList)
 	})
 	return r
 }
@@ -82,4 +92,14 @@ func HandleRedirectDownload(w http.ResponseWriter, r *http.Request) {
 
 	utils.WriteJson(w, http.StatusOK, "successfully fetched download details", nil, utils.ResponseVar{"download_link", downloadLink},
 		utils.ResponseVar{"start_time", startTime})
+}
+
+func HandleRegisterUser(w http.ResponseWriter, r *http.Request) {
+	//TODO implement me
+}
+
+func HandleUserList(w http.ResponseWriter, r *http.Request) {
+	//TODO implement me
+	utils.WriteJson(w, http.StatusOK, "successfully fetched user list", nil, utils.ResponseVar{})
+
 }

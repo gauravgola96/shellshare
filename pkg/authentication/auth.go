@@ -34,7 +34,17 @@ func Initialize(ctx context.Context) error {
 		Issuer:            "shellshare-service",                        // part of token, just informational
 		URL:               addr,                                        // base url of the protected Service
 		AvatarStore:       avatar.NewLocalFS("/tmp/demo-auth-service"), // stores avatars locally
-		AvatarResizeLimit: 200,                                         // resizes avatars to 200x200
+		AvatarResizeLimit: 200,
+		ClaimsUpd: token.ClaimsUpdFunc(func(claims token.Claims) token.Claims { // modify issued token
+			if claims.User != nil {
+				adminUsers := viper.GetStringSlice("admins")
+				if utils.ItemExists(adminUsers, claims.User.ID) {
+					// set attributes for admin
+					claims.User.SetAdmin(true)
+				}
+			}
+			return claims
+		}), // resizes avatars to 200x200
 		Validator: token.ValidatorFunc(func(_ string, claims token.Claims) bool { // rejects some tokens
 			if claims.User != nil {
 				if strings.HasPrefix(claims.User.ID, "github_") { // allow all users with github authentication
@@ -48,7 +58,7 @@ func Initialize(ctx context.Context) error {
 			return false
 		}),
 		Logger:      log.Default(), // optional logger for auth library
-		UseGravatar: true,          // for verified provider use gravatar servic
+		UseGravatar: true,          // for verified provider use gravatar service
 	}
 
 	service := auth.NewService(options)

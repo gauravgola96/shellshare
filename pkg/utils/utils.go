@@ -56,6 +56,15 @@ func GetHostAddress() string {
 	return address
 }
 
+func ItemExists(arr []string, target string) bool {
+	for _, a := range arr {
+		if a == target {
+			return true
+		}
+	}
+	return false
+}
+
 func BuildDownloadLinkStr(address string, id string, timeout int) string {
 	var msg strings.Builder
 	msg.WriteString("\n")

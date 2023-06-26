@@ -21,3 +21,5 @@ storage:
   mongo:
     host: "localhost"
     port: 27017
+
+admins: ["google_70be55dcdc1d949efac32384f24c7e9c2c791fac"]
