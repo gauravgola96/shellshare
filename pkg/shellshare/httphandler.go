@@ -86,7 +86,7 @@ func HandleUserInfo(w http.ResponseWriter, r *http.Request) {
 	}
 	_ = storage.UpdateUserLastLogin(r.Context(), userInfo.ID)
 	utils.WriteJson(w, http.StatusOK, "successfully fetched user info", nil, utils.ResponseVar{"user_info", userInfo})
-}}
+}
 
 func HandleRedirectDownload(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
