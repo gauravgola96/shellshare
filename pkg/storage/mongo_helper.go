@@ -63,7 +63,7 @@ func RegisterUser(ctx context.Context, data User) error {
 	user := User{}
 	filter := bson.D{{"user_id", data.UserId}}
 	err := S.Mongo.Database(UserDatabase).Collection(CollectionUser).FindOne(ctx, filter).Decode(&user)
-	if user.UserId != "" || err != nil {
+	if user.UserId != "" || (err != nil && err != mongo.ErrNoDocuments) {
 		subLogger.Error().Err(err).Msgf("User %+v already registered", user)
 		return nil
 	}
