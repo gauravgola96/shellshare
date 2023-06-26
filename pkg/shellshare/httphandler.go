@@ -51,10 +51,8 @@ func HandleDirectDownload(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	tunnel, ok := t.Tunnel.Get(id)
 	if !ok {
-		utils.WriteJson(w, http.StatusNotFound, "Id not found", nil, utils.ResponseVar{
-			Key: "Id",
-			Val: id,
-		})
+		utils.WriteJson(w, http.StatusNotFound, fmt.Sprintf("Download is either completed or timed out"), nil)
+		return
 	}
 	defer t.Tunnel.Delete(id)
 	w.Header().Set("Content-Type", "application/zip")
