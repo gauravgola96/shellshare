@@ -31,3 +31,14 @@ func DefaultMiddleware(r *chi.Mux) http.Handler {
 		))
 	return r
 }
+
+func AddAuthXSRFToken(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		token, err := r.Cookie("XSRF-TOKEN")
+		if err != nil {
+			return
+		}
+		r.Header.Set("X-XSRF-TOKEN", token.Value)
+		next.ServeHTTP(w, r.WithContext(r.Context()))
+	})
+}

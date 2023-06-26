@@ -16,7 +16,7 @@ import (
 
 var (
 	ErrNilCache = errors.New("nil cache")
-	s           *Storage
+	S           *Storage
 )
 
 type Storage struct {
@@ -38,20 +38,20 @@ type valueItem struct {
 }
 
 func Initialize() error {
-	if s == nil {
-		s = &Storage{}
+	if S == nil {
+		S = &Storage{}
 	}
 	m, err := InitializeMongo()
 	if err != nil {
 		return err
 	}
-	s.Mongo = m
+	S.Mongo = m
 
 	c, err := NewCache()
 	if err != nil {
 		return err
 	}
-	s.Cache = c
+	S.Cache = c
 	return nil
 }
 

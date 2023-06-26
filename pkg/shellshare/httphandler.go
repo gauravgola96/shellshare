@@ -6,6 +6,7 @@ import (
 	"github.com/go-pkgz/auth/token"
 	"github.com/rs/zerolog/log"
 	auth2 "githug.com/gauravgola96/shellshare/pkg/authentication"
+	"githug.com/gauravgola96/shellshare/pkg/middleware"
 	st "githug.com/gauravgola96/shellshare/pkg/storage"
 	t "githug.com/gauravgola96/shellshare/pkg/tunnel"
 	"githug.com/gauravgola96/shellshare/pkg/utils"
@@ -20,6 +21,7 @@ func HttpRoutes() *chi.Mux {
 	r.Get("/redirect/download/{id}", HandleRedirectDownload)
 	r.Route("/user/", func(r chi.Router) {
 		m := auth2.Auth.Service.Middleware()
+		r.Use(middleware.AddAuthXSRFToken)
 		r.Use(m.Auth)
 
 		r.Get("/info", HandleUserInfo)
@@ -63,7 +65,7 @@ func HandleUserInfo(w http.ResponseWriter, r *http.Request) {
 
 func HandleRedirectDownload(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
-	_, startTime, err := st.Cache.Get(id)
+	_, startTime, err := st.S.Cache.Get(id)
 	if err == st.ErrNilCache {
 		utils.WriteJson(w, http.StatusNotFound, fmt.Sprintf("Download is either completed or timed out"), nil)
 		return
