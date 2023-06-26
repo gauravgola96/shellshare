@@ -125,7 +125,7 @@ func (c *Cache_) Put(key string, value string, expire time.Duration) {
 func (c *Cache_) Delete(key string) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
-	if _, ok := c.items[key]; !ok {
+	if _, ok := c.items[key]; ok {
 		delete(c.items, key)
 	}
 }

@@ -39,6 +39,7 @@ func HandleSSHSession(s ssh.Session) {
 	}
 	//store in cache
 	st.S.Cache.Put(uid.String(), "", utils.MaxCacheTTLMinutes*time.Minute)
+	defer st.S.Cache.Delete(uid.String())
 
 	s.Write([]byte(utils.BuildDownloadLinkStr(address, uid.String(), utils.MaxTimoutMinutes)))
 
@@ -59,7 +60,6 @@ func HandleSSHSession(s ssh.Session) {
 		case tunnel := <-t.Tunnel.GetWaitTunnel(uid.String()):
 			defer func() {
 				close(tunnel.Done)
-				st.S.Cache.Delete(uid.String())
 				s.Close()
 			}()
 
