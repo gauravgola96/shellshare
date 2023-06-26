@@ -7,7 +7,7 @@ import (
 	"github.com/rs/zerolog/log"
 	auth2 "githug.com/gauravgola96/shellshare/pkg/authentication"
 	"githug.com/gauravgola96/shellshare/pkg/middleware"
-	st "githug.com/gauravgola96/shellshare/pkg/storage"
+	"githug.com/gauravgola96/shellshare/pkg/storage"
 	t "githug.com/gauravgola96/shellshare/pkg/tunnel"
 	"githug.com/gauravgola96/shellshare/pkg/utils"
 	"net/http"
@@ -65,20 +65,21 @@ func HandleDirectDownload(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandleUserInfo(w http.ResponseWriter, r *http.Request) {
-	subLogger := log.With().Str("module", "ssh_handler.HandleSShRequest").Logger()
+	subLogger := log.With().Str("module", "http_handler.HandleSShRequest").Logger()
 	userInfo, err := token.GetUserInfo(r)
 	if err != nil {
 		subLogger.Error().Err(err).Msg("Error in get user info")
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+	_ = storage.UpdateUserLastLogin(r.Context(), userInfo.ID)
 	utils.WriteJson(w, http.StatusOK, "successfully fetched user info", nil, utils.ResponseVar{"user_info", userInfo})
 }
 
 func HandleRedirectDownload(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
-	_, startTime, err := st.S.Cache.Get(id)
-	if err == st.ErrNilCache {
+	_, startTime, err := storage.S.Cache.Get(id)
+	if err == storage.ErrNilCache {
 		utils.WriteJson(w, http.StatusNotFound, fmt.Sprintf("Download is either completed or timed out"), nil)
 		return
 	} else if err != nil {
@@ -97,11 +98,32 @@ func HandleRedirectDownload(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandleRegisterUser(w http.ResponseWriter, r *http.Request) {
-	// TODO implement me
+	subLogger := log.With().Str("module", "http_handler.HandleRegisterUser").Logger()
+	userInfo, err := token.GetUserInfo(r)
+	if err != nil {
+		subLogger.Error().Err(err).Msg("Error in get user info")
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	err = storage.RegisterUserData(r.Context(), storage.User{UserId: userInfo.ID})
+	if err != nil {
+		subLogger.Error().Err(err).Msg("Error in mongo update")
+		utils.WriteJson(w, http.StatusInternalServerError, "something went wrong", err, utils.ResponseVar{
+			Key: "user_id",
+			Val: userInfo.ID,
+		})
+		return
+	}
+	utils.WriteJson(w, http.StatusOK, "successfully registered user", nil, utils.ResponseVar{"user_id", userInfo.ID})
 }
 
 func HandleUserList(w http.ResponseWriter, r *http.Request) {
-	// TODO implement me
-	utils.WriteJson(w, http.StatusOK, "successfully fetched user list", nil, utils.ResponseVar{})
-
+	subLogger := log.With().Str("module", "http_handler.HandleUserList").Logger()
+	users, err := storage.GetUsers(r.Context(), -1)
+	if err != nil {
+		subLogger.Error().Err(err).Msg("Error in mongo")
+		utils.WriteJson(w, http.StatusInternalServerError, "something went wrong", err, utils.ResponseVar{})
+		return
+	}
+	utils.WriteJson(w, http.StatusOK, "successfully fetched user list", nil, utils.ResponseVar{"users", users})
 }
