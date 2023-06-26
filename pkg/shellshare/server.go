@@ -80,7 +80,6 @@ func ServerAll() error {
 	addr := fmt.Sprintf("%s:%d", viper.GetString("http.hostname"), viper.GetInt("http.port"))
 	router := chi.NewRouter()
 	middleware.DefaultMiddleware(router)
-	middleware.AddAuthXSRFToken(router)
 
 	// setup ui
 	workDir, _ := os.Getwd()
