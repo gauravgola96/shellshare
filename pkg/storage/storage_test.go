@@ -50,7 +50,7 @@ func TestStorageMongo(t *testing.T) {
 func TestRegisterUserData(t *testing.T) {
 	Setup()
 	_ = Initialize()
-	err := RegisterUserData(context.TODO(), User{UserId: "ABC", SSHKeys: "SSH_123"})
+	err := RegisterUser(context.TODO(), User{UserId: "ABC", SSHKeys: "SSH_123"})
 	if err != nil {
 		t.Log(err)
 		return

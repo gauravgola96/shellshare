@@ -69,12 +69,24 @@ func HandleUserInfo(w http.ResponseWriter, r *http.Request) {
 	userInfo, err := token.GetUserInfo(r)
 	if err != nil {
 		subLogger.Error().Err(err).Msg("Error in get user info")
-		w.WriteHeader(http.StatusInternalServerError)
+		utils.WriteJson(w, http.StatusInternalServerError, "something went wrong", err, utils.ResponseVar{
+			Key: "user_id",
+			Val: userInfo.ID,
+		})
+		return
+	}
+	err = storage.RegisterUser(r.Context(), storage.User{UserId: userInfo.ID})
+	if err != nil {
+		subLogger.Error().Err(err).Msg("Error in mongo update")
+		utils.WriteJson(w, http.StatusInternalServerError, "something went wrong", err, utils.ResponseVar{
+			Key: "user_id",
+			Val: userInfo.ID,
+		})
 		return
 	}
 	_ = storage.UpdateUserLastLogin(r.Context(), userInfo.ID)
 	utils.WriteJson(w, http.StatusOK, "successfully fetched user info", nil, utils.ResponseVar{"user_info", userInfo})
-}
+}}
 
 func HandleRedirectDownload(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
@@ -105,7 +117,7 @@ func HandleRegisterUser(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	err = storage.RegisterUserData(r.Context(), storage.User{UserId: userInfo.ID})
+	err = storage.RegisterUser(r.Context(), storage.User{UserId: userInfo.ID})
 	if err != nil {
 		subLogger.Error().Err(err).Msg("Error in mongo update")
 		utils.WriteJson(w, http.StatusInternalServerError, "something went wrong", err, utils.ResponseVar{

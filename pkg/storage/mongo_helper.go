@@ -54,8 +54,8 @@ func UpdateDownloadDetail(ctx context.Context, data Download) error {
 	return nil
 }
 
-func RegisterUserData(ctx context.Context, data User) error {
-	subLogger := log.With().Str("module", "mongo_helper.RegisterUserData").Logger()
+func RegisterUser(ctx context.Context, data User) error {
+	subLogger := log.With().Str("module", "mongo_helper.RegisterUser").Logger()
 
 	ctx, cancle := context.WithTimeout(ctx, 5*time.Second)
 	defer cancle()
@@ -63,7 +63,7 @@ func RegisterUserData(ctx context.Context, data User) error {
 	user := User{}
 	filter := bson.D{{"user_id", data.UserId}}
 	err := S.Mongo.Database(UserDatabase).Collection(CollectionUser).FindOne(ctx, filter).Decode(&user)
-	if err != mongo.ErrNoDocuments {
+	if user.UserId != "" || err != nil {
 		subLogger.Error().Err(err).Msgf("User %+v already registered", user)
 		return nil
 	}
@@ -80,7 +80,7 @@ func RegisterUserData(ctx context.Context, data User) error {
 }
 
 func UpdateUserLastLogin(ctx context.Context, id string) error {
-	subLogger := log.With().Str("module", "mongo_helper.RegisterUserData").Logger()
+	subLogger := log.With().Str("module", "mongo_helper.RegisterUser").Logger()
 
 	ctx, cancle := context.WithTimeout(ctx, 5*time.Second)
 	defer cancle()
