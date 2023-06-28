@@ -12,7 +12,7 @@ import (
 type Status string
 
 const (
-	UserDatabase       string = "user"
+	DatabaseUser       string = "user"
 	CollectionDownload string = "download"
 	CollectionUser     string = "user_info"
 	CollectionUsage    string = "usage"
@@ -34,6 +34,7 @@ type Download struct {
 
 type User struct {
 	UserId    string    `bson:"user_id,omitempty"`
+	UserName  string    `bson:"name,omitempty"`
 	SSHKeys   string    `bson:"ssh_keys,omitempty"`
 	JoinedAt  time.Time `bson:"joined_at,omitempty"`
 	LastLogin time.Time `bson:"last_login,omitempty"`
@@ -42,7 +43,7 @@ type User struct {
 func UpdateDownloadDetail(ctx context.Context, data Download) error {
 	ctx, cancle := context.WithTimeout(ctx, 5*time.Second)
 	defer cancle()
-	_, err := S.Mongo.Database(UserDatabase).Collection(CollectionDownload).InsertOne(ctx, Download{
+	_, err := S.Mongo.Database(DatabaseUser).Collection(CollectionDownload).InsertOne(ctx, Download{
 		data.SSHKeys,
 		data.BytesWritten,
 		data.Status,
@@ -62,13 +63,14 @@ func RegisterUser(ctx context.Context, data User) error {
 
 	user := User{}
 	filter := bson.D{{"user_id", data.UserId}}
-	err := S.Mongo.Database(UserDatabase).Collection(CollectionUser).FindOne(ctx, filter).Decode(&user)
+	err := S.Mongo.Database(DatabaseUser).Collection(CollectionUser).FindOne(ctx, filter).Decode(&user)
 	if user.UserId != "" || (err != nil && err != mongo.ErrNoDocuments) {
 		subLogger.Error().Err(err).Msgf("User %+v already registered", user)
 		return nil
 	}
-	_, err = S.Mongo.Database(UserDatabase).Collection(CollectionUser).InsertOne(ctx, User{
+	_, err = S.Mongo.Database(DatabaseUser).Collection(CollectionUser).InsertOne(ctx, User{
 		UserId:    data.UserId,
+		UserName:  data.UserName,
 		JoinedAt:  time.Now(),
 		SSHKeys:   data.SSHKeys,
 		LastLogin: time.Now(),
@@ -87,7 +89,7 @@ func UpdateUserLastLogin(ctx context.Context, id string) error {
 
 	filter := bson.D{{"user_id", id}}
 	update := bson.D{{"$set", bson.D{{"last_login", time.Now()}}}}
-	_, err := S.Mongo.Database(UserDatabase).Collection(CollectionUser).UpdateOne(ctx, filter, update)
+	_, err := S.Mongo.Database(DatabaseUser).Collection(CollectionUser).UpdateOne(ctx, filter, update)
 	if err == mongo.ErrNoDocuments {
 		subLogger.Error().Err(err).Msgf("UserId %s not registered", id)
 		return nil
@@ -116,7 +118,7 @@ func GetUsers(ctx context.Context, limit int64) ([]User, error) {
 		opts = options.Find().SetLimit(limit)
 	}
 
-	cursor, err := S.Mongo.Database(UserDatabase).Collection(CollectionUser).Find(ctx, filter, opts)
+	cursor, err := S.Mongo.Database(DatabaseUser).Collection(CollectionUser).Find(ctx, filter, opts)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
 			subLogger.Error().Err(err).Msg("No user found")
