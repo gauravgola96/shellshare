@@ -29,7 +29,7 @@ func HandleSSHSession(s ssh.Session) {
 		return
 	}
 	subLogger.Debug().Msgf("Tunnel Id : %s", uid.String())
-	t.Tunnel.Store(uid.String(), make(chan t.SSHTunnel))
+	t.Tunnel.Store(uid.String(), make(chan t.ConnectionTunnel))
 
 	address := utils.GetHostAddress()
 	option, err := utils.ParseUserOption(s.Command())
@@ -42,7 +42,7 @@ func HandleSSHSession(s ssh.Session) {
 	st.S.Cache.Put(uid.String(), st.ValueItem{FileName: option.FileName, Message: option.Message}, utils.MaxCacheTTLMinutes*time.Minute)
 	defer st.S.Cache.Delete(uid.String())
 
-	s.Write([]byte(utils.BuildDownloadLinkStr(address, uid.String(), utils.MaxTimoutMinutes)))
+	s.Write([]byte(utils.BuildDownloadLinkStr(address, uid.String(), utils.MaxTimoutSSHMinutes)))
 
 	var (
 		written int64
@@ -51,6 +51,7 @@ func HandleSSHSession(s ssh.Session) {
 	defer func() {
 		err := st.UpdateDownloadDetail(context.TODO(), st.Download{
 			SSHKeys:      string(authorizedKey),
+			Source:       st.SourceSSH,
 			BytesWritten: written,
 			Status:       status,
 		})
@@ -59,7 +60,7 @@ func HandleSSHSession(s ssh.Session) {
 		}
 	}()
 
-	ticker := time.NewTicker(utils.MaxTimoutMinutes * time.Minute)
+	ticker := time.NewTicker(utils.MaxTimoutSSHMinutes * time.Minute)
 	for {
 		select {
 		case <-s.Context().Done():

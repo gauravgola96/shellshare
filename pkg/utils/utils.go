@@ -6,6 +6,7 @@ import (
 	"github.com/TwiN/go-color"
 	"github.com/enescakir/emoji"
 	"github.com/spf13/viper"
+	"html/template"
 	"math/rand"
 	"net/http"
 	"strings"
@@ -13,9 +14,10 @@ import (
 )
 
 const (
-	MaxTimoutMinutes   = 15
-	MaxCacheTTLMinutes = 20
-	MaxBytesSize       = 2147483648 //2 GB
+	MaxTimoutSSHMinutes  = 15
+	MaxTimoutHTTPMinutes = 10
+	MaxCacheTTLMinutes   = 20
+	MaxBytesSize         = 2147483648 //2 GB
 )
 
 func WriteJson(w http.ResponseWriter, status int, message any, err error, rvars ...ResponseVar) {
@@ -63,6 +65,18 @@ func ItemExists(arr []string, target string) bool {
 		}
 	}
 	return false
+}
+
+func RenderTemplate(w http.ResponseWriter, html string) error {
+	parsedTemplate, err := template.ParseFiles("./frontend-working/" + html)
+	if err != nil {
+		return err
+	}
+	err = parsedTemplate.Execute(w, nil)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func BuildDownloadLinkStr(address string, id string, timeout int) string {

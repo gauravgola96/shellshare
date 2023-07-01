@@ -25,8 +25,14 @@ const (
 	SessionClose Status = "session_closed"
 )
 
+const (
+	SourceSSH  string = "ssh"
+	SourceHTTP string = "http"
+)
+
 type Download struct {
 	SSHKeys      string    `bson:"ssh_keys,omitempty"`
+	Source       string    `bson:"source,omitempty"`
 	BytesWritten int64     `bson:"bytes_written,omitempty"`
 	Status       Status    `bson:"Status,omitempty"`
 	UpdatedAt    time.Time `bson:"updated_at,omitempty"`
@@ -45,6 +51,7 @@ func UpdateDownloadDetail(ctx context.Context, data Download) error {
 	defer cancle()
 	_, err := S.Mongo.Database(DatabaseUser).Collection(CollectionDownload).InsertOne(ctx, Download{
 		data.SSHKeys,
+		data.Source,
 		data.BytesWritten,
 		data.Status,
 		time.Now(),
