@@ -113,7 +113,6 @@ func (c *Cache_) Put(key string, value ValueItem, expire time.Duration) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 	if _, ok := c.items[key]; !ok {
-
 		value.StartTime = time.Now()
 		value.Expires = expire.Nanoseconds()
 		c.items[key] = &value

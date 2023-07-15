@@ -23,6 +23,8 @@ func HttpRoutes() *chi.Mux {
 	r.Get("/health", HandleHealthCheck)
 	r.Get("/download/{id}", HandleDirectDownload)
 	r.Get("/redirect/download/{id}", HandleRedirectDownload)
+	r.Post("/stream", HandleStreamFile)
+
 	r.Route("/user/", func(r chi.Router) {
 		r.Use(middleware.AddAuthXSRFToken)
 		r.Use(m.Auth)
@@ -62,7 +64,7 @@ func HandleDirectDownload(w http.ResponseWriter, r *http.Request) {
 
 	doneChan := make(chan struct{}, 1)
 
-	tunnel <- t.SSHTunnel{W: w, Done: doneChan}
+	tunnel <- t.ConnectionTunnel{W: w, Done: doneChan}
 	<-doneChan
 }
 
@@ -160,14 +162,65 @@ func HandleUserList(w http.ResponseWriter, r *http.Request) {
 	utils.WriteJson(w, http.StatusOK, "successfully fetched user list", nil, utils.ResponseVar{"users", users})
 }
 
-func RenderTemplate(w http.ResponseWriter, html string) error {
-	parsedTemplate, err := template.ParseFiles("./frontend-working/" + html)
-	if err != nil {
-		return err
+func HandleStreamFile(w http.ResponseWriter, r *http.Request) {
+	subLogger := log.With().Str("module", "http_handler.HandleStreamFile").Logger()
+
+	if r.Method != http.MethodPost {
+		utils.WriteJson(w, http.StatusMethodNotAllowed, "Method not allowed", nil)
+		return
 	}
-	err = parsedTemplate.Execute(w, nil)
-	if err != nil {
-		return err
+
+	uuid_ := r.FormValue("uuid")
+	if uuid_ == "" {
+		utils.WriteJson(w, http.StatusBadRequest, "uuid is nil", nil, utils.ResponseVar{})
+		return
 	}
-	return nil
+
+	// Retrieve the uploaded file from the request
+	file, header, err := r.FormFile("file")
+	if err != nil {
+		utils.WriteJson(w, http.StatusBadRequest, "Method not allowed", err, utils.ResponseVar{})
+		return
+	}
+	defer file.Close()
+
+	//store in cache
+	storage.S.Cache.Put(uuid_, storage.ValueItem{FileName: header.Filename, Message: ""}, utils.MaxCacheTTLMinutes*time.Minute)
+	defer storage.S.Cache.Delete(uuid_)
+
+	subLogger.Debug().Msgf("Tunnel Id : %s", uuid_)
+	t.Tunnel.Store(uuid_, make(chan t.ConnectionTunnel))
+
+	ticker := time.NewTicker(utils.MaxTimoutHTTPMinutes * time.Minute)
+	for {
+		select {
+		case <-r.Context().Done():
+			subLogger.Info().Msg("Session closed from client")
+			utils.WriteJson(w, http.StatusGatewayTimeout, "Session closed from client", nil, utils.ResponseVar{})
+			return
+
+		case <-ticker.C:
+			subLogger.Info().Msg("Session timeout")
+			t.Tunnel.Delete(uuid_)
+			utils.WriteJson(w, http.StatusGatewayTimeout, "Session timeout", nil, utils.ResponseVar{})
+			return
+
+		case tunnel := <-t.Tunnel.GetWaitTunnel(uuid_):
+			defer func() {
+				close(tunnel.Done)
+			}()
+
+			subLogger.Debug().Msgf("HTTP Tunnel ready : %s", uuid_)
+
+			_, err := ZipAndWriteFile(header.Filename, tunnel.W, file)
+			if err != nil {
+				subLogger.Error().Err(err).Msg("Error in session writer")
+				utils.WriteJson(w, http.StatusInternalServerError, "Error in zip writer", err, utils.ResponseVar{})
+				return
+			}
+			return
+		default:
+			//pass
+		}
+	}
 }
