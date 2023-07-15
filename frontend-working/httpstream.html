@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Upload Example</title>
+</head>
+<body>
+<h1>File Upload Example</h1>
+<form id="uploadForm" enctype="multipart/form-data">
+    <input type="file" name="fileToUpload" id="fileToUpload">
+    <input type="button" value="Upload" onclick="uploadFile()">
+</form>
+
+<script>
+    function uploadFile() {
+        var fileInput = document.getElementById("fileToUpload");
+        var file = fileInput.files[0];
+        var formData = new FormData();
+        formData.append("file", file);
+
+        // Generate a random UUID
+        var uuid = generateUUID();
+        formData.append("uuid", uuid);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:8000/v1/stream", true);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var response = xhr.responseText;
+                alert("File uploaded successfully! UUID: " + response);
+            } else {
+                alert("File upload failed!");
+            }
+        };
+        console.log("http://localhost:8000/v1/download/"+uuid)
+        xhr.send(formData);
+    }
+
+    function generateUUID() {
+        // Generate a version 4 (random) UUID
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16 | 0,
+                v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+</script>
+</body>
+</html>

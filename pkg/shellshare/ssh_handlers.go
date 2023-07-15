@@ -2,6 +2,7 @@ package shellshare
 
 import (
 	"archive/zip"
+	"context"
 	"errors"
 	"fmt"
 	"github.com/gliderlabs/ssh"
@@ -28,7 +29,7 @@ func HandleSSHSession(s ssh.Session) {
 		return
 	}
 	subLogger.Debug().Msgf("Tunnel Id : %s", uid.String())
-	t.Tunnel.Store(uid.String(), make(chan t.SSHTunnel))
+	t.Tunnel.Store(uid.String(), make(chan t.ConnectionTunnel))
 
 	address := utils.GetHostAddress()
 	option, err := utils.ParseUserOption(s.Command())
@@ -38,20 +39,38 @@ func HandleSSHSession(s ssh.Session) {
 		return
 	}
 	//store in cache
-	st.S.Cache.Put(uid.String(), "", utils.MaxCacheTTLMinutes*time.Minute)
+	st.S.Cache.Put(uid.String(), st.ValueItem{FileName: option.FileName, Message: option.Message}, utils.MaxCacheTTLMinutes*time.Minute)
 	defer st.S.Cache.Delete(uid.String())
 
-	s.Write([]byte(utils.BuildDownloadLinkStr(address, uid.String(), utils.MaxTimoutMinutes)))
+	s.Write([]byte(utils.BuildDownloadLinkStr(address, uid.String(), utils.MaxTimoutSSHMinutes)))
 
-	ticker := time.NewTicker(utils.MaxTimoutMinutes * time.Minute)
+	var (
+		written int64
+		status  st.Status = st.Success
+	)
+	defer func() {
+		err := st.UpdateDownloadDetail(context.TODO(), st.Download{
+			SSHKeys:      string(authorizedKey),
+			Source:       st.SourceSSH,
+			BytesWritten: written,
+			Status:       status,
+		})
+		if err != nil {
+			subLogger.Error().Err(err).Msg("Error in mongo update")
+		}
+	}()
+
+	ticker := time.NewTicker(utils.MaxTimoutSSHMinutes * time.Minute)
 	for {
 		select {
 		case <-s.Context().Done():
+			status = st.SessionClose
 			subLogger.Info().Msg("Session closed from client")
 			return
 
 		case <-ticker.C:
 			subLogger.Info().Msg("Session timeout")
+			status = st.Timeout
 			s.Write([]byte(utils.BuildCloseSessionTimeoutStr()))
 			t.Tunnel.Delete(uid.String())
 			s.Close()
@@ -65,8 +84,9 @@ func HandleSSHSession(s ssh.Session) {
 
 			subLogger.Debug().Msgf("Tunnel ready : %s", uid.String())
 
-			err = ZipAndWriteFile(option.FileName, tunnel.W, s)
+			written, err = ZipAndWriteFile(option.FileName, tunnel.W, s)
 			if err != nil {
+				status = st.Failed
 				s.Write([]byte(utils.BuildDownloadErrorStr(err)))
 				subLogger.Error().Err(err).Msg("Error in session writer")
 				return
@@ -81,7 +101,7 @@ func HandleSSHSession(s ssh.Session) {
 }
 
 // ZipAndWriteFile Zip file and update it to io.writer
-func ZipAndWriteFile(filename string, w io.Writer, r io.Reader) error {
+func ZipAndWriteFile(filename string, w io.Writer, r io.Reader) (int64, error) {
 	subLogger := log.With().Str("module", "ssh_handler.ZipAndWriteFile").Logger()
 
 	if filename == "" {
@@ -91,7 +111,7 @@ func ZipAndWriteFile(filename string, w io.Writer, r io.Reader) error {
 	f, err := os.Create(filename)
 	if err != nil {
 		subLogger.Error().Err(err).Msg("Error in file creation")
-		return err
+		return 0, err
 	}
 
 	defer func() {
@@ -106,21 +126,22 @@ func ZipAndWriteFile(filename string, w io.Writer, r io.Reader) error {
 	cf, err := zw.Create(f.Name())
 	if err != nil {
 		subLogger.Error().Err(err).Msg("Error in zip create")
-		return err
+		return 0, err
 	}
 
 	//_, err = io.Copy(cf, r)
-	_, err = CopyBuffer(cf, r, nil)
+	var written int64
+	written, err = CopyBuffer(cf, r, nil)
 	if err != nil {
 		subLogger.Error().Err(err).Msg("Error in copy reader")
-		return err
+		return 0, err
 	}
 	err = zw.Close()
 	if err != nil {
 		subLogger.Error().Err(err).Msg("Error in zip closure")
-		return err
+		return 0, err
 	}
-	return nil
+	return written, nil
 }
 
 // CopyBuffer implementation of io.Copy with max byte limit check
