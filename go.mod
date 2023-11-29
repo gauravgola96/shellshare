@@ -16,6 +16,7 @@ require (
 	github.com/rs/zerolog v1.29.1
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/viper v1.16.0
+	go.mongodb.org/mongo-driver v1.12.0
 	golang.org/x/crypto v0.10.0
 )
 
@@ -44,7 +45,6 @@ require (
 	github.com/montanaflynn/stats v0.7.1 // indirect
 	github.com/nullrocks/identicon v0.0.0-20180626043057-7875f45b0022 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.8 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
 	github.com/spf13/afero v1.9.5 // indirect
 	github.com/spf13/cast v1.5.1 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
@@ -55,7 +55,6 @@ require (
 	github.com/xdg-go/stringprep v1.0.4 // indirect
 	github.com/youmark/pkcs8 v0.0.0-20201027041543-1326539a0a0a // indirect
 	go.etcd.io/bbolt v1.3.7 // indirect
-	go.mongodb.org/mongo-driver v1.12.0 // indirect
 	golang.org/x/image v0.8.0 // indirect
 	golang.org/x/net v0.11.0 // indirect
 	golang.org/x/oauth2 v0.9.0 // indirect
