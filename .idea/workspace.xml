@@ -5,40 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e80a84f6-92d8-4679-8429-fca30d63ff59" name="Changes" comment="Title: &#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Readme.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmd/shellshare/combined.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmd/shellshare/http.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmd/shellshare/main.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmd/shellshare/ssh.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/config.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-working/common.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-working/httpstream.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-working/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-working/login.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-working/login.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-working/main.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-working/profile.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-working/profile.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-working/redirect.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-working/signup.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/main.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/style.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/authentication/auth.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/middleware/middleware.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/shellshare/httphandler.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/shellshare/server.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/shellshare/ssh_handlers.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/storage/mongo_helper.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/storage/storage.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/storage/storage_test.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/tunnel/tunnel.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/utils/user_options.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/utils/utils.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/utils/utils_test.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/private.pem" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/Readme.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,7 +52,7 @@
     "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
     "RunOnceActivity.go.vendoring.notification.had.been.shown": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "",
+    "git-widget-placeholder": "main",
     "go.import.settings.migrated": "true",
     "go.sdk.automatically.set": "true",
     "last_opened_file_path": "/Users/gaurav/personal/repos/shellshare",
@@ -232,7 +201,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Title: Added cleaner version for max byte transfer check" />
     <MESSAGE value="Title: Added user public key access&#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai" />
     <MESSAGE value="Title: Session close from client" />
     <MESSAGE value="Title: Typo fix" />
@@ -257,7 +225,8 @@
     <MESSAGE value="Title: Added HTTP to HTTP tunnelling&#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai" />
     <MESSAGE value="Title: Added direct download console log&#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai" />
     <MESSAGE value="Title: Updated config.yaml&#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai" />
-    <option name="LAST_COMMIT_MESSAGE" value="Title: Updated config.yaml&#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai" />
+    <MESSAGE value="Title: go mod update &#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai" />
+    <option name="LAST_COMMIT_MESSAGE" value="Title: go mod update &#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
