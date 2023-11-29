@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="e80a84f6-92d8-4679-8429-fca30d63ff59" name="Changes" comment="Title: &#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Readme.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/shellshare/combined.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/shellshare/http.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/shellshare/main.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/shellshare/ssh.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/config.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-working/common.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-working/httpstream.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-working/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-working/login.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-working/login.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-working/main.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-working/profile.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-working/profile.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-working/redirect.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-working/signup.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/main.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/authentication/auth.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/middleware/middleware.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/shellshare/httphandler.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/shellshare/server.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/shellshare/ssh_handlers.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/storage/mongo_helper.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/storage/storage.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/storage/storage_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/tunnel/tunnel.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/utils/user_options.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/utils/utils.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/utils/utils_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/private.pem" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="GOROOT" url="file:///usr/local/go" />
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="feature/http_tunnel" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/pkg/shellshare/httphandler.go" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2RILD5MJlo0viFPYuAZ5Del9Zjk" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultGoTemplateProperty": "Go File",
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
+    "RunOnceActivity.go.vendoring.notification.had.been.shown": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "",
+    "go.import.settings.migrated": "true",
+    "go.sdk.automatically.set": "true",
+    "last_opened_file_path": "/Users/gaurav/personal/repos/shellshare",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "reference.settings.ide.settings.new.ui"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/frontend" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/fronted-working" />
+      <recent name="$PROJECT_DIR$/pkg/utils" />
+      <recent name="$PROJECT_DIR$/pkg/shellshare" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Go Build.shellshare-combined">
+    <configuration name="shellshare-combined" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="shellshare" />
+      <working_directory value="$PROJECT_DIR$" />
+      <parameters value="combined" />
+      <kind value="DIRECTORY" />
+      <package value="githug.com/gauravgola96/shellshare" />
+      <directory value="$PROJECT_DIR$/cmd/shellshare" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="shellshare-http" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="shellshare" />
+      <working_directory value="$PROJECT_DIR$" />
+      <parameters value="http" />
+      <kind value="DIRECTORY" />
+      <package value="githug.com/gauravgola96/shellshare" />
+      <directory value="$PROJECT_DIR$/cmd/shellshare" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="shellshare-ssh" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="shellshare" />
+      <working_directory value="$PROJECT_DIR$" />
+      <parameters value="ssh" />
+      <kind value="DIRECTORY" />
+      <package value="githug.com/gauravgola96/shellshare" />
+      <directory value="$PROJECT_DIR$/cmd/shellshare" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestGetUsers in githug.com/gauravgola96/shellshare/pkg/storage" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="shellshare" />
+      <working_directory value="$PROJECT_DIR$/pkg/storage" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="githug.com/gauravgola96/shellshare/pkg/storage" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestGetUsers\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestNewCache in githug.com/gauravgola96/shellshare/pkg/storage" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="shellshare" />
+      <working_directory value="$PROJECT_DIR$/pkg/storage" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="githug.com/gauravgola96/shellshare/pkg/storage" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestNewCache\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestRegisterUserData in githug.com/gauravgola96/shellshare/pkg/storage" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="shellshare" />
+      <working_directory value="$PROJECT_DIR$/pkg/storage" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="githug.com/gauravgola96/shellshare/pkg/storage" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestRegisterUserData\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestUpdateDownloadDetail in githug.com/gauravgola96/shellshare/pkg/storage" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="shellshare" />
+      <working_directory value="$PROJECT_DIR$/pkg/storage" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="githug.com/gauravgola96/shellshare/pkg/storage" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestUpdateDownloadDetail\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestUpdateUserLastLogin in githug.com/gauravgola96/shellshare/pkg/storage" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="shellshare" />
+      <working_directory value="$PROJECT_DIR$/pkg/storage" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="githug.com/gauravgola96/shellshare/pkg/storage" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestUpdateUserLastLogin\E$" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Go Build.shellshare-ssh" />
+      <item itemvalue="Go Build.shellshare-combined" />
+      <item itemvalue="Go Build.shellshare-http" />
+      <item itemvalue="Go Test.TestNewCache in githug.com/gauravgola96/shellshare/pkg/storage" />
+      <item itemvalue="Go Test.TestGetUsers in githug.com/gauravgola96/shellshare/pkg/storage" />
+      <item itemvalue="Go Test.TestRegisterUserData in githug.com/gauravgola96/shellshare/pkg/storage" />
+      <item itemvalue="Go Test.TestUpdateDownloadDetail in githug.com/gauravgola96/shellshare/pkg/storage" />
+      <item itemvalue="Go Test.TestUpdateUserLastLogin in githug.com/gauravgola96/shellshare/pkg/storage" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go Test.TestUpdateUserLastLogin in githug.com/gauravgola96/shellshare/pkg/storage" />
+        <item itemvalue="Go Test.TestRegisterUserData in githug.com/gauravgola96/shellshare/pkg/storage" />
+        <item itemvalue="Go Test.TestNewCache in githug.com/gauravgola96/shellshare/pkg/storage" />
+        <item itemvalue="Go Test.TestGetUsers in githug.com/gauravgola96/shellshare/pkg/storage" />
+        <item itemvalue="Go Test.TestUpdateDownloadDetail in githug.com/gauravgola96/shellshare/pkg/storage" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Title: Added cleaner version for max byte transfer check" />
+    <MESSAGE value="Title: Added user public key access&#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai" />
+    <MESSAGE value="Title: Session close from client" />
+    <MESSAGE value="Title: Typo fix" />
+    <MESSAGE value="Title: Download message cleanup&#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai" />
+    <MESSAGE value="Title: Added frontend basic files&#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai" />
+    <MESSAGE value="Title: Added html css js&#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai" />
+    <MESSAGE value="Title: Added in-memory cache&#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai" />
+    <MESSAGE value="Title: Typo fix&#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai" />
+    <MESSAGE value="Title: Minor fixes&#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai" />
+    <MESSAGE value="Title: Added mongo support&#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai" />
+    <MESSAGE value="Title: Added token in headers&#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai" />
+    <MESSAGE value="Title: Added admin user support&#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai" />
+    <MESSAGE value="Title: auth fixes&#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai" />
+    <MESSAGE value="Title: fixes&#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai" />
+    <MESSAGE value="Title: Cache delete fix&#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai" />
+    <MESSAGE value="Title: Added mongo helper functions&#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai" />
+    <MESSAGE value="Title: mongo fixes&#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai" />
+    <MESSAGE value="Title: typo&#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai" />
+    <MESSAGE value="Title: Modified cache&#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai" />
+    <MESSAGE value="Title: mongo write fix&#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai" />
+    <MESSAGE value="Title: Added redirect.html&#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai" />
+    <MESSAGE value="Title: Added HTTP to HTTP tunnelling&#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai" />
+    <MESSAGE value="Title: Added direct download console log&#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai" />
+    <MESSAGE value="Title: Updated config.yaml&#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai" />
+    <option name="LAST_COMMIT_MESSAGE" value="Title: Updated config.yaml&#10;# Category: Development/ Bug Fix/ Enhancement/ &#10;# Type: Code/ Document/ Data / Others&#10;# Domain: Dev/ Test/ Deployment/ Tool/ &#10;# Body: Explain *what* and *why*&#10;# Jira task ID (Jira issue):&#10;# Release Version:&#10;# Co-authored-by: gaurav.gola@conversenow.ai" />
+  </component>
+  <component name="VgoProject">
+    <settings-migrated>true</settings-migrated>
+  </component>
+</project>
