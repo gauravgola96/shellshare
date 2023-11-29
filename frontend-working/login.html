@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Shellshare login</title>
+  <style>
+    /* CSS styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    header ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+    
+    header ul li {
+      display: inline;
+      margin-right: 10px;
+    }
+    
+    header ul li a {
+      color: #fff;
+      text-decoration: none;
+    }
+    
+    footer {
+      background-color: #333;
+      color: #fff;
+      padding: 20px;
+      text-align: right;
+      margin-top: auto;
+    }
+    
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      margin-top: auto;
+      padding: 100px;
+      border-radius: 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0,1);
+    }
+
+    .login_header {
+      padding-bottom: 30px;
+    }
+    
+    h1 {
+      text-align: center;
+    }
+    
+    .login-btn {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    
+    .login-btn a {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: #333;
+    }
+    
+    .login-btn img {
+      width: 50px;
+      height: 50px;
+      margin-right: 10px;
+    }
+    
+    .box {
+      background-color: #f5f5f5;
+      padding: 20px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+    </ul>
+  </header>
+  
+  <div class="container">
+    <h1 class="login_header">Login</h1>
+    
+    <div class="login-btn">
+      <a id="google" href="#">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Gmail_Icon_%282013-2020%29.svg/2560px-Gmail_Icon_%282013-2020%29.svg.png" alt="Gmail Logo">
+        Sign in with Gmail
+      </a>
+    </div>
+      <br>
+      <br>
+      <hr>
+      <br>
+    <div class="login-btn">
+      <a id="github" href="#">
+        <img src="https://seeklogo.com/images/G/github-logo-2E3852456C-seeklogo.com.png" alt="GitHub Logo">
+        Sign in with GitHub
+      </a>
+    </div>
+    <br>
+    <br>
+    <!-- <div class="signup-link">
+        Don't have an account? <a href="./signup.html">Sign up</a>
+    </div> -->
+        
+  </div>
+
+  <footer>
+    <p>Contact: info@shellshare.io</p>
+  </footer>
+  <script src="common.js" type="module"></script>
+  <script src="login.js" type="module"></script>
+
+</body>
+</html>

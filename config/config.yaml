@@ -1,0 +1,25 @@
+Production: false
+
+ssh:
+  hostname: "localhost"
+  port: 2222
+
+http:
+  remote_host: "shellshare.io"
+  hostname: "localhost"
+  port: 8000
+
+auth:
+  github:
+    client_id: ""
+    client_secret: ""
+  google:
+    client_id: ""
+    client_secret: ""
+
+storage:
+  mongo:
+    host: "localhost"
+    port: 27017
+
+admins: [""]
