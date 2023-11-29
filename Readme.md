@@ -81,7 +81,7 @@ Mongo (Not required if only using SSH) :https://www.mongodb.com/docs/manual/inst
 ## Usage/Examples
 1.
 ```bash
-ssh localhost -p 2222 <path to file>
+ssh localhost -p 2222 < <path to file>
 
 ```
 
