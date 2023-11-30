@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 var shellshareCmd = &cobra.Command{
@@ -14,8 +13,7 @@ var shellshareCmd = &cobra.Command{
 func main() {
 	err := shellshareCmd.Execute()
 	if err != nil {
-		log.Fatal().Err(err)
-		os.Exit(1)
+		log.Fatal().Err(err).Send()
 		return
 	}
 }
